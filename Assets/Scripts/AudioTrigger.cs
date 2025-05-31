@@ -1,25 +1,29 @@
+using System;
 using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
 {
+    [SerializeField]
+    private string audioClipName;
     private string TriggerTag = "Player";
 
-    private AudioSource audioSource;
+    private bool wasTriggered = false;
 
-    private void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-        GetComponent<Collider>().isTrigger = true;
-    }
+    public static event Action OnTrigger;
 
     private void OnTriggerEnter(Collider other)
     {
+
+        if(wasTriggered)
+        {
+            return;
+        }
+
         if (other.CompareTag(TriggerTag))
         {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            OnTrigger?.Invoke();
+            wasTriggered = true;
+            AudioManager.Instance.PlaySfx(audioClipName);
         }
     }
 }
