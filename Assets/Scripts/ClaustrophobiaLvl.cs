@@ -9,32 +9,45 @@ public class ClaustrophobiaLvl : MonoBehaviour
     private int currentLevel = 0;
     public static event Action<int> OnLevelChange;
 
+    [SerializeField]
+    private GameObject OriginalBuilding;
+    [SerializeField]
+    private GameObject ClaustrophobicBuilding;
+
     public void Awake()
     {
-        ClaustrophobiaLvlTriggers.OnLvlTrigger += IncreaseClaustrophobiaLvl;
+        ClaustrophobiaLvlTriggers.OnLvlTrigger += ChangeClaustrophobiaLvl;
     }
 
     public void OnDisable()
     {
-        ClaustrophobiaLvlTriggers.OnLvlTrigger -= IncreaseClaustrophobiaLvl;
+        ClaustrophobiaLvlTriggers.OnLvlTrigger -= ChangeClaustrophobiaLvl;
     }
 
-    public void IncreaseClaustrophobiaLvl(int amount)
+    public void ChangeClaustrophobiaLvl(int amount)
     {
-        currentLevel+= amount;
+        currentLevel = amount;
         LevelChange();
     }
 
-    public void DecreasePostProcessingLevel(int amount)
-    {
-        currentLevel-= amount;
-        LevelChange();
-    }
+
 
     public void LevelChange()
     {
         OnLevelChange?.Invoke(currentLevel);
+
+        switch(currentLevel)
+        {
+            case 5:
+                OriginalBuilding.SetActive(false);
+                ClaustrophobicBuilding.SetActive(true);
+                break;
+            case 8:
+                break;
+        }
     }
+
+    
 
 
 

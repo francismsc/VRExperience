@@ -1,16 +1,32 @@
+using System.Collections;
 using UnityEngine;
 
 public class FinalPart : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    private GameObject Soldier;
+    [SerializeField]
+    private GameObject Soldier2;
+
+    private void Start()
     {
-        
+        ClaustrophobiaLvl.OnLevelChange += LastLvl;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LastLvl(int lvl)
     {
-        
+        if (lvl == 8)
+        {
+            StartCoroutine(ActivateSoldierAfterDelay());
+        }
+    }
+
+    private IEnumerator ActivateSoldierAfterDelay()
+    {
+        Soldier.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        Soldier.SetActive(false);
+        Soldier2.SetActive(true);
+                                          
     }
 }

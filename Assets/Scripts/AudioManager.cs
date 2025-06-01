@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] heartbeats;
     [SerializeField] private AudioClip[] breathing;
     [SerializeField] private AudioSource heartbeatSource, breathingSource;
+    [SerializeField] Animation doorAnimation;
 
     private Queue<AudioClip> narrationQueue = new Queue<AudioClip>();
     private bool isNarrationPlaying = false;
@@ -28,6 +29,7 @@ public class AudioManager : MonoBehaviour
     private void OnDisable()
     {
         AudioTrigger.OnAudioTrigger -= StepsGetCloser;
+        ClaustrophobiaLvl.OnLevelChange -= ClaustrophobiaSound;
     }
 
     private void Awake()
@@ -90,8 +92,8 @@ public class AudioManager : MonoBehaviour
 
     private void StepsGetCloser()
     {
-        stepsSource.volume += 0.075f;
-        stepsSource.spatialBlend -= 0.075f;
+        stepsSource.volume += 0.05f;
+        stepsSource.spatialBlend -= 0.05f;
     }
 
     private IEnumerator PlayNarrationQueue()
@@ -119,18 +121,24 @@ public class AudioManager : MonoBehaviour
                 PlayHeartBeatSound();
                 PlayBreathingSound();
                 break;
-            case 4:
+            case 5:
                 heartbeatSource.clip = heartbeats[1];
                 breathingSource.clip = breathing[1];
                 PlayHeartBeatSound();
                 PlayBreathingSound();
-
+           
                 break;
-            case 5:
+            case 6:
+                PlaySFX("Knock");
+                break;
+            case 7:
                 heartbeatSource.clip = heartbeats[2];
                 breathingSource.clip = breathing[2];
                 PlayHeartBeatSound();
                 PlayBreathingSound();
+                PlaySFX("DoorCreak");
+                doorAnimation.Play();
+
                 break;
 
 

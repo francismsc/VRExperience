@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29d753b734673542a0f30a38d36c735, type: 3}
   m_Name: PostProcessingLevelData 2
   m_EditorClassIdentifier: 
-  filmGrainIntensity: 0.764
+  filmGrainIntensity: 0.555
   filmGrainType: 0
   vignetteIntensity: 0
   bloomIntensity: 0

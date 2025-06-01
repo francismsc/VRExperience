@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filmGrainIntensity: 0.713
   filmGrainType: 8
-  vignetteIntensity: 0.854
+  vignetteIntensity: 0.71
   bloomIntensity: 0
   transitionTime: 3
