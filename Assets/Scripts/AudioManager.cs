@@ -1,23 +1,27 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [SerializeField] private Sound[] musicSounds, sfxSounds;
-    [SerializeField] private AudioSource musicSource, sfxSource;
-
+    [SerializeField] private Sound[] musicSounds, sfxSounds, narrationSounds;
+    [SerializeField] private AudioSource musicSource, sfxSource, narrationSource;
     [SerializeField] private AudioSource stepsSource;
+
+    private Queue<AudioClip> narrationQueue = new Queue<AudioClip>();
+    private bool isNarrationPlaying = false;
 
     private void Start()
     {
-        AudioTrigger.OnTrigger += StepsGetCloser;
+        AudioTrigger.OnAudioTrigger += StepsGetCloser;
     }
 
     private void OnDisable()
     {
-        AudioTrigger.OnTrigger -= StepsGetCloser;
+        AudioTrigger.OnAudioTrigger -= StepsGetCloser;
     }
 
     private void Awake()
@@ -46,7 +50,25 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySfx(string name)
+    public void PlayNarration(string name)
+    {
+        Sound s = Array.Find(narrationSounds, x => x.name == name);
+
+        if (s == null)
+        {
+            Debug.Log("Narration sound not found: " + name);
+            return;
+        }
+
+        narrationQueue.Enqueue(s.clip);
+
+        if (!isNarrationPlaying)
+        {
+            StartCoroutine(PlayNarrationQueue());
+        }
+    }
+
+    public void PlaySFX(string name)
     {
         Sound s = Array.Find(sfxSounds, x => x.name == name);
 
@@ -64,4 +86,20 @@ public class AudioManager : MonoBehaviour
     {
         stepsSource.volume += 0.075f;
     }
+
+    private IEnumerator PlayNarrationQueue()
+    {
+        isNarrationPlaying = true;
+
+        while (narrationQueue.Count > 0)
+        {
+            AudioClip clip = narrationQueue.Dequeue();
+            narrationSource.clip = clip;
+            narrationSource.Play();
+            yield return new WaitForSeconds(clip.length);
+        }
+
+        isNarrationPlaying = false;
+    }
+
 }

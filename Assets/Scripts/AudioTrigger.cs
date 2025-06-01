@@ -4,12 +4,11 @@ using UnityEngine;
 public class AudioTrigger : MonoBehaviour
 {
     [SerializeField]
-    private string audioClipName;
+    private string[] audioClipNamesArray;
     private string TriggerTag = "Player";
 
     private bool wasTriggered = false;
-
-    public static event Action OnTrigger;
+    public static event Action OnAudioTrigger;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,9 +20,12 @@ public class AudioTrigger : MonoBehaviour
 
         if (other.CompareTag(TriggerTag))
         {
-            OnTrigger?.Invoke();
             wasTriggered = true;
-            AudioManager.Instance.PlaySfx(audioClipName);
+            OnAudioTrigger?.Invoke();
+            foreach (string name in audioClipNamesArray)
+            {
+                AudioManager.Instance.PlayNarration(name);
+            }
         }
     }
 }
