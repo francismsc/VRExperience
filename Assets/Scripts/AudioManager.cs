@@ -11,12 +11,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource, sfxSource, narrationSource;
     [SerializeField] private AudioSource stepsSource;
 
+    //HardCoded needs to be properly done
+    [SerializeField] private AudioClip[] heartbeats;
+    [SerializeField] private AudioClip[] breathing;
+    [SerializeField] private AudioSource heartbeatSource, breathingSource;
+
     private Queue<AudioClip> narrationQueue = new Queue<AudioClip>();
     private bool isNarrationPlaying = false;
 
     private void Start()
     {
         AudioTrigger.OnAudioTrigger += StepsGetCloser;
+        ClaustrophobiaLvl.OnLevelChange += ClaustrophobiaSound;
     }
 
     private void OnDisable()
@@ -85,6 +91,7 @@ public class AudioManager : MonoBehaviour
     private void StepsGetCloser()
     {
         stepsSource.volume += 0.075f;
+        stepsSource.spatialBlend -= 0.075f;
     }
 
     private IEnumerator PlayNarrationQueue()
@@ -100,6 +107,48 @@ public class AudioManager : MonoBehaviour
         }
 
         isNarrationPlaying = false;
+    }
+
+    private void ClaustrophobiaSound(int currentLevel)
+    {
+        switch(currentLevel)
+        {
+            case 3:
+                heartbeatSource.clip = heartbeats[0];           
+                breathingSource.clip = breathing[0];
+                PlayHeartBeatSound();
+                PlayBreathingSound();
+                break;
+            case 4:
+                heartbeatSource.clip = heartbeats[1];
+                breathingSource.clip = breathing[1];
+                PlayHeartBeatSound();
+                PlayBreathingSound();
+
+                break;
+            case 5:
+                heartbeatSource.clip = heartbeats[2];
+                breathingSource.clip = breathing[2];
+                PlayHeartBeatSound();
+                PlayBreathingSound();
+                break;
+
+
+        }
+
+
+    }
+
+    private void PlayHeartBeatSound()
+    {
+        heartbeatSource.loop = true;
+        heartbeatSource.Play();
+    }
+
+    private void PlayBreathingSound()
+    {
+        breathingSource.loop = true;
+        breathingSource.Play();
     }
 
 }

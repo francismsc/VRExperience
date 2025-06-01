@@ -1,0 +1,34 @@
+{
+    "name": "XRControls",
+    "maps": [
+        {
+            "name": "ExitHide",
+            "id": "28b30d4e-8425-485a-a44f-2c19eec3778d",
+            "actions": [
+                {
+                    "name": "Up",
+                    "type": "Button",
+                    "id": "6ba0ae6c-8821-478e-b01e-91ef1b0b385a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bd865f25-659b-454b-87b3-1d85fd9f062d",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
